@@ -19,7 +19,6 @@ def set_connection():
 def cut_connection(connection):
     if connection:
         connection.close()
-    return 'Connection Closed'
 
 def login_user(connection, username, password):
     try :
@@ -38,7 +37,6 @@ def login_user(connection, username, password):
         return "Query Failed"
     finally :
         cursor.close()
-        cut_connection(connection)
     
 def signup_user(connection, form_dict):
     username = form_dict.get("username")
@@ -65,7 +63,17 @@ def signup_user(connection, form_dict):
         return False
     finally :
         cursor.close()
-        cut_connection(connection)
+
+def return_user(connection, user_id):
+    try:
+        cursor = connection.cursor()
+        cursor.execute("SELECT first_name, last_name, email, age, sex FROM user_details WHERE login_id=%s", (user_id, ))
+        records = cursor.fetchone()
+        return records
+    except Exception as e:
+        print(f'Error : {e}')
+    finally:
+        cursor.close()
 
 def insert_results(connection, user_id, mmse, functional, memory, behavior, adl, probability):
     try:
@@ -81,7 +89,6 @@ def insert_results(connection, user_id, mmse, functional, memory, behavior, adl,
         print(f'Error : {e}')
     finally :
         cursor.close()
-        cut_connection(connection)
 
 def get_result(connection, user_id):
     try:
@@ -93,4 +100,3 @@ def get_result(connection, user_id):
         print(f'Error : {e}')
     finally:
         cursor.close()
-        cut_connection(connection)

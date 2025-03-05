@@ -12,7 +12,10 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 45%;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    align-items: center;
 }
 
 .avatar {
@@ -27,38 +30,15 @@
     justify-content: center;
     align-items: center;
     margin: 0 auto;
+    margin-top: 20px;
 }
 
 .risk-score {
     font-weight: bold;
+    display: inline-block;
 }
 
 .risk-icon {
     font-size: 20px;
-}
-
-.risk-history {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    margin: 20px auto;
-    text-align: center;
-}
-
-.risk-history table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.risk-history th, .risk-history td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-.risk-history th {
-    background-color: #007bff;
-    color: white;
+    display: inline-block;
 }

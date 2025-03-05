@@ -37,6 +37,7 @@ def login():
             return render_template('login.html', error='\nLogin Failed! Are You Registered?\n')
     else :
         return render_template('login.html', error='Connection Error! Contact Support')
+    dbconnect.cut_connection(connection)
             
 #signup page routing
 @app.route('/signup')
@@ -55,6 +56,7 @@ def signup():
             return render_template('signup.html', error='\nSignup Failed! Contact Support\n')
     else:
         return render_template('signup.html', error='\nConnection Error')
+    dbconnect.cut_connection(connection)
 
 #assess page routing
 @app.route('/assess')
@@ -111,11 +113,20 @@ def show_track():
         return render_template('track.html', labels=labels, scores=scores, data_flag=data_flag, score_change=score_change)
     else :
         return render_template('track.html', error='\nConnection Error')
+    dbconnect.cut_connection(connection)
 
 #profile routing
 @app.route('/profile')
 def show_profile():
-    return render_template('profile.html')
+    connection = dbconnect.set_connection()
+    if connection:
+        user_details = dbconnect.return_user(connection, session['user_id'])
+        first_name, last_name, email, age, sex = user_details
+        risk_details = dbconnect.get_result(connection, session['user_id'])
+        score = risk_details[-1][1] if risk_details else False
+        return render_template('profile.html', first_name=first_name, last_name=last_name, email=email, age=age, sex=sex, score=score)
+    return render_template('profile.html', error="Failed to fetch user details.")
+    dbconnect.cut_connection(connection)
 
 #logout routing
 @app.route('/logout')

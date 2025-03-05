@@ -24,38 +24,24 @@
     </header>
     <div class="a-container">
         <div class="profile-card">
-            <div class="profile-info">
-                <div class="avatar">DU</div>
-                <h2>Demo User</h2>
-                <p>Member since: Mar 4, 2025</p>
-                <p>Assessments: 2</p>
-                <p>Latest Score: <span class="risk-score">NaN%</span></p>
+            <div>
+                <div class="avatar">{{ session['username'][:2].upper() }}</div>
+                <h2>{{ first_name }} {{ last_name }}</h2>
+                <p>Email: {{ email }}</p>
+                <p>Age: {{ age }}</p>
+                <p>Sex: {{ sex }}</p>
             </div>
-        </div>
+        </div>        
         <div class="risk-card">
             <h2>Risk Assessment</h2>
-            <p>Overall Risk Score: <span class="risk-score">NaN%</span> <span class="risk-icon">❗</span></p>
+            <p>Overall Risk Score: 
+                <span class="risk-score">
+                    {% if score %}
+                    {{ score }} </span> <span class="risk-icon">❗</span></p>
+                    {% else %}
+                    No Previous History
+                    {% endif %}     
         </div>
-    </div>
-    <div class="risk-history">
-        <h2>Risk History</h2>
-        <table>
-            <tr>
-                <th>Date</th>
-                <th>Biomarker</th>
-                <th>Score</th>
-            </tr>
-            <tr>
-                <td>Mar 1, 2025</td>
-                <td>Memory</td>
-                <td>80%</td>
-            </tr>
-            <tr>
-                <td>Feb 20, 2025</td>
-                <td>Cognitive Speed</td>
-                <td>75%</td>
-            </tr>
-        </table>
     </div>
     <footer>
         <div class="footer-container">
