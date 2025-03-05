@@ -13,20 +13,13 @@
             <nav style="display: flex; align-items: center;"> 
                 <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" width="120" style="margin-right: 20px;"> 
                 <a href="/">HOME PAGE</a>
-                {% if 'user_id' in session %}
-                    <a href="/assess">RISK ASSESSMENT</a>
-                    <a href="#">INSIGHTS FOR YOU</a>
-                    <a href="/track">TRACK RISK</a>
-                {% else %}
-                    <a href="/login">RISK ASSESSMENT</a>
-                    <a href="/login">INSIGHTS FOR YOU</a>
-                    <a href="/login">TRACK RISK</a>
-                {% endif %}
+                <a href="/assess">RISK ASSESSMENT</a>
+                <a href="#">INSIGHTS FOR YOU</a>
+                <a href="/track">TRACK RISK</a>
             </nav>
         </div>
-        <div>
-            <span>Welcome, {{ session['username'] }}!</span>
-            <a href="/logout"><button class="btn">Logout</button></a>
+        <div style="display: flex; align-items: center;">
+            <a href="/profile"><button class="btn">Your Profile</button></a>
         </div>
     </header>
     <div class="main-content">

@@ -112,6 +112,11 @@ def show_track():
     else :
         return render_template('track.html', error='\nConnection Error')
 
+#profile routing
+@app.route('/profile')
+def show_profile():
+    return render_template('profile.html')
+
 #logout routing
 @app.route('/logout')
 def logout_user():

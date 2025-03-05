@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles2.css') }}">
+</head>
+<body>
+    <header>
+        <div>
+            <nav style="display: flex; align-items: center;"> 
+                <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" width="120" style="margin-right: 20px;"> 
+                <a href="/">HOME PAGE</a>
+                <a href="/assess">RISK ASSESSMENT</a>
+                <a href="#">INSIGHTS FOR YOU</a>
+                <a href="/track">TRACK RISK</a>
+            </nav>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <a href="/logout"><button class="btn">Logout</button></a>
+        </div>
+    </header>
+    <div class="a-container">
+        <div class="profile-card">
+            <div class="profile-info">
+                <div class="avatar">DU</div>
+                <h2>Demo User</h2>
+                <p>Member since: Mar 4, 2025</p>
+                <p>Assessments: 2</p>
+                <p>Latest Score: <span class="risk-score">NaN%</span></p>
+            </div>
+        </div>
+        <div class="risk-card">
+            <h2>Risk Assessment</h2>
+            <p>Overall Risk Score: <span class="risk-score">NaN%</span> <span class="risk-icon">❗</span></p>
+        </div>
+    </div>
+    <div class="risk-history">
+        <h2>Risk History</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Biomarker</th>
+                <th>Score</th>
+            </tr>
+            <tr>
+                <td>Mar 1, 2025</td>
+                <td>Memory</td>
+                <td>80%</td>
+            </tr>
+            <tr>
+                <td>Feb 20, 2025</td>
+                <td>Cognitive Speed</td>
+                <td>75%</td>
+            </tr>
+        </table>
+    </div>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>AI-Powered Alzheimer's Risk Predictor helps individuals assess their risk and take proactive steps towards brain health.</p>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: support@alzheimerspredictor.com</p>
+                <p>Phone: +1 234 567 890</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AI Alzheimer's Predictor. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

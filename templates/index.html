@@ -24,10 +24,9 @@
                 {% endif %}
             </nav>
         </div>
-        <div>
+        <div style="display: flex; align-items: center;"> 
             {% if 'user_id' in session %}
-                <span>Welcome, {{ session['username'] }}!</span>
-                <a href="/logout"><button class="btn">Logout</button></a>
+                <a href="/profile"><button class="btn">Your Profile</button></a>
             {% else %}
                 <a href="/login"><button class="btn">Login</button></a>
                 <a href="/signup"><button class="btn">Signup</button></a>
@@ -76,7 +75,7 @@
     <div class="assessment">
         <h2>Assess Your Alzheimer's Risk Today</h2>
         {% if 'user_id' in session %}
-            <a href="/assess"><button class="btn">Test Now</button></a>
+            <a href="/assess"><button class="btn" style="margin-right: 10px; margin-bottom: 10px;">Test Now</button></a>
         {% else %}
             <a href="/login"><button class="btn">Test Now</button></a>
         {% endif %}
