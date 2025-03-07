@@ -34,13 +34,20 @@
         </div>        
         <div class="risk-card">
             <h2>Risk Assessment</h2>
-            <p>Overall Risk Score: 
-                <span class="risk-score">
-                    {% if score %}
-                    {{ score }} </span> <span class="risk-icon">❗</span></p>
-                    {% else %}
-                    No Previous History
-                    {% endif %}     
+            <p>Recent Risk Score:</p>
+            <div class="risk-score-container">
+                {% if score %}
+                    <div class="risk-score 
+                        {% if score < 40 %}risk-low
+                        {% elif score < 60 %}risk-medium
+                        {% else %}risk-high
+                        {% endif %}">
+                        {{ score }}
+                    </div>
+                {% else %}
+                    <div class="risk-score no-score">No Previous History</div>
+                {% endif %}
+            </div>
         </div>
     </div>
     <footer>

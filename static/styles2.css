@@ -33,12 +33,41 @@
     margin-top: 20px;
 }
 
-.risk-score {
-    font-weight: bold;
-    display: inline-block;
+.risk-score-container {
+    display: flex;
+    justify-content: center;
 }
 
-.risk-icon {
-    font-size: 20px;
-    display: inline-block;
+.risk-score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.risk-score.risk-low {
+    background: linear-gradient(135deg, #4CAF50, #cfff41);
+}
+
+.risk-score.risk-medium {
+    background: linear-gradient(135deg, #FFA500, #FF0000);
+}
+
+.risk-score.risk-high {
+    background: linear-gradient(135deg, #C62828, #a21f48);
+}
+
+.risk-score.no-score {
+    width: auto;
+    height: auto;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 16px;
+    color: black;
 }

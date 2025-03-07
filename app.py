@@ -83,8 +83,7 @@ def submit_test():
         if connection:
             dbconnect.insert_results(connection, session['user_id'], mmse, functional, memory, behavior, adl, probability)
         risk_percentage = f"{probability * 100:.2f}%"
-        return render_template('result.html', risk_percentage=risk_percentage)
-
+        return redirect('/profile')
     except Exception as e:
         import traceback
         print("Error during prediction:\n", traceback.format_exc())
