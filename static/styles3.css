@@ -1,0 +1,101 @@
+/* Global Styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #a8edea, #fdfbfb, #d4fc79);
+    min-height: 100vh; /* Ensure full viewport height */
+    overflow-y: auto; /* Ensure vertical scroll */
+    scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+/* Ensure Entire Page is Visible */
+#root, .test-body {
+    padding-top: 80px; /* Ensures top visibility */
+}
+
+/* Container for MMSE Form */
+.test-container {
+    max-width: 900px; /* Wider container */
+    margin: 20px auto; /* Ensure visibility and center */
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+}
+
+/* Header Styling */
+h2, h3, h4 {
+    color: #2c3e50; /* Darker text for readability */
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+/* Dropdown (Select) Styling */
+select {
+    width: 100%; /* Full-width dropdown */
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #bdc3c7;
+    border-radius: 10px;
+    background: #f8f8f8;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+/* Hover & Focus Effects for Select */
+select:hover, select:focus {
+    border-color: #4CAF50; /* Highlight on focus */
+}
+
+/* Form Sections */
+.section {
+    margin-bottom: 40px; /* Space between sections */
+}
+
+/* Submit Button Styling */
+.cta-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: #4CAF50; /* Primary button color */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+/* Hover Effect for Button */
+.cta-btn:hover {
+    background: #45a049; /* Darker shade on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .test-container {
+        padding: 20px; /* Reduce padding for small screens */
+    }
+
+    select {
+        font-size: 14px; /* Smaller font for better fit */
+    }
+
+    .cta-btn {
+        font-size: 16px; /* Smaller button font */
+    }
+
+    #root, .test-body {
+        padding-top: 100px; /* Ensure visibility on small screens */
+    }
+}
+
+/* Force scroll to the top */
+html {
+    scroll-padding-top: 100px; /* Prevent content from being hidden */
+}

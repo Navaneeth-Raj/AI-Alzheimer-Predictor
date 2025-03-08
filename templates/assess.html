@@ -14,8 +14,8 @@
         <form action="/submit-test" method="POST">
 
             <!-- MMSE Score (Out of 30) -->
-            <label for="mmse">MMSE Score (Out of 30):</label>
-            <input type="number" id="mmse" name="mmse" step="any" required placeholder="Enter MMSE Score">
+            <label for="mmse">MMSE Score (Out of 30):</label><a href="/mmse">Calculate MMSE Score</a>
+            <input type="number" id="mmse" name="mmse" step="any" value="{{ mmse_score if mmse_score else '' }}" required placeholder="Enter MMSE Score">
 
             <!-- Functional Assessment (Out of 10) -->
             <label for="functional">Functional Assessment (Out of 10):</label>

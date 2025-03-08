@@ -1,6 +1,7 @@
-from flask import Flask, request, redirect, render_template, session
+from flask import Flask, request, redirect, render_template, session, url_for
 from datetime import timedelta, datetime
-import dbconnect
+from dbconnect import *
+import mmse_test as mt
 import pickle
 import pandas as pd
 from sklearn.preprocessing import StandardScaler 
@@ -26,18 +27,18 @@ def show_login():
 def login():
     username = request.form['username']
     password = request.form['password']
-    connection = dbconnect.set_connection()
+    connection = set_connection()
     if connection:
-        user_id = dbconnect.login_user(connection, username, password)
+        user_id = login_user(connection, username, password)
         if user_id:
             session['user_id'] = user_id
             session['username'] = username
+            connection.close()
             return redirect('/')
         else :
             return render_template('login.html', error='\nLogin Failed! Are You Registered?\n')
     else :
         return render_template('login.html', error='Connection Error! Contact Support')
-    dbconnect.cut_connection(connection)
             
 #signup page routing
 @app.route('/signup')
@@ -47,21 +48,22 @@ def show_signup():
 @app.route('/signup', methods=["POST"])
 def signup():
     form_dict = request.form.to_dict()
-    connection = dbconnect.set_connection()
+    connection = set_connection()
     if connection :
-        success = dbconnect.signup_user(connection, form_dict)
+        success = signup_user(connection, form_dict)
+        connection.close()
         if success :
             return redirect('/login')
         else :
             return render_template('signup.html', error='\nSignup Failed! Contact Support\n')
     else:
         return render_template('signup.html', error='\nConnection Error')
-    dbconnect.cut_connection(connection)
 
 #assess page routing
 @app.route('/assess')
 def show_assess():
-    return render_template('assess.html')
+    mmse_score = request.args.get('mmse_score', None)
+    return render_template('assess.html', mmse_score=mmse_score)
 
 @app.route('/submit-test', methods=["POST"])
 def submit_test(): 
@@ -79,22 +81,65 @@ def submit_test():
         prediction = model.predict(input_scaled)[0]
         probability = model.predict_proba(input_scaled)[0][1]
 
-        connection = dbconnect.set_connection()
+        connection = set_connection()
         if connection:
-            dbconnect.insert_results(connection, session['user_id'], mmse, functional, memory, behavior, adl, probability)
+            insert_results(connection, session['user_id'], mmse, functional, memory, behavior, adl, probability)
         risk_percentage = f"{probability * 100:.2f}%"
+        connection.close()
         return redirect('/profile')
     except Exception as e:
         import traceback
         print("Error during prediction:\n", traceback.format_exc())
         return f"Internal Server Error during prediction: {e}"
 
+#mmse test
+@app.route('/mmse')
+def show_mmse_test():
+    return render_template('mmse_test.html')
+
+@app.route('/calculate-mmse', methods=['POST'])
+def calc_mmse():
+    try:
+        answers = request.form.to_dict()
+        mmse_score = mt.is_date(answers['q1'])
+        print('q1',mmse_score)
+        mmse_score += mt.is_month(answers['q2'])
+        print('q2',mmse_score)
+        mmse_score += mt.is_year(answers['q3'])
+        print('q3',mmse_score)
+        mmse_score += mt.is_weekday(answers['q4'])
+        print('q4',mmse_score)
+        mmse_score += mt.is_noon(answers['q5'])
+        print('q5',mmse_score)
+        """mmse_score += mt.is_state(answers['q6'])
+        mmse_score += mt.is_country(answers['q7'])
+        mmse_score += mt.is_city(answers['q8'])
+        mmse_score += mt.is_building('q9')
+        mmse_score += mt.is_room('q10')"""
+        mmse_score += mt.is_registering(answers['q11'])
+        print('q11',mmse_score)
+        mmse_score += mt.is_attentive(answers['q12'])
+        print('q12',mmse_score)
+        mmse_score += mt.is_registering(answers['q13'])
+        print('q13',mmse_score)
+        mmse_score += mt.is_tools(answers['q14'])
+        print('q14',mmse_score)
+        mmse_score += mt.is_sentence(answers['q15'])
+        print('q15',mmse_score)
+        mmse_score += mt.is_tea_making(answers['q16'])
+        print('q16',mmse_score)
+        mmse_score += mt.is_pentagon(answers['q17'])
+        print('q17',mmse_score)
+        return redirect(url_for('show_assess', mmse_score=mmse_score))
+    except Exception as e:
+        print(f'Error : {e}')
+
 #tracking route
 @app.route('/track')
 def show_track():
-    connection = dbconnect.set_connection()
+    connection = set_connection()
     if connection :
-        results = dbconnect.get_result(connection, session['user_id'])
+        results = get_result(connection, session['user_id'])
         if results:
             data_flag = True
             labels = [row[0].strftime('%Y-%m-%d') if row[0] else '' for row in results]  
@@ -109,23 +154,23 @@ def show_track():
             labels, scores = [], [] 
             data_flag = False 
             score_change = None
+            connection.close()
         return render_template('track.html', labels=labels, scores=scores, data_flag=data_flag, score_change=score_change)
     else :
         return render_template('track.html', error='\nConnection Error')
-    dbconnect.cut_connection(connection)
 
 #profile routing
 @app.route('/profile')
 def show_profile():
-    connection = dbconnect.set_connection()
+    connection = set_connection()
     if connection:
-        user_details = dbconnect.return_user(connection, session['user_id'])
+        user_details = return_user(connection, session['user_id'])
         first_name, last_name, email, age, sex = user_details
-        risk_details = dbconnect.get_result(connection, session['user_id'])
+        risk_details = get_result(connection, session['user_id'])
         score = risk_details[-1][1] if risk_details else False
+        connection.close()
         return render_template('profile.html', first_name=first_name, last_name=last_name, email=email, age=age, sex=sex, score=score)
     return render_template('profile.html', error="Failed to fetch user details.")
-    dbconnect.cut_connection(connection)
 
 #logout routing
 @app.route('/logout')

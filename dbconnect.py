@@ -16,10 +16,6 @@ def set_connection():
         print(f"Error : {err}")
         return None 
 
-def cut_connection(connection):
-    if connection:
-        connection.close()
-
 def login_user(connection, username, password):
     try :
         cursor = connection.cursor()
