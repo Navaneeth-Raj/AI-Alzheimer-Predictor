@@ -12,11 +12,11 @@
 <body class="test-body">
     <div class="test-container">
         <h1 class="title">🧠 Mini-Mental State Examination (MMSE)</h1>
-        <form action="/calculate-mmse" method="POST" class="test-form">
+        <form action="/calculate-mmse" method="POST" class="test-form" autocomplete="off">
 
             <!-- Section 1: Orientation (10 points) -->
             <section class="section">
-                <h2>1. Orientation (10 points)</h2>
+                <h2>1. Orientation</h2>
 
                 <h3>(a) What is today’s date?</h3>
                 {% for i, label in [('q1', 'Date (eg - 8 March 2025)'), ('q2', 'Month'), ('q3', 'Year'), ('q4', 'Day of the Week'), ('q5', 'Is it before noon or after noon?')] %}
@@ -27,7 +27,7 @@
                 {% endfor %}
 
                 <h3>(b) Where are we?</h3>
-                {% for i, label in [('q6', 'State'), ('q7', 'Country'), ('q8', 'City'), ('q9', 'Building'), ('q10', 'Room')] %}
+                {% for i, label in [('q6', 'Country'), ('q7', 'State') , ('q8', 'City')] %}
                 <div class="form-group">
                     <label>{{ label }}:</label><br>
                     <input type="text" name="{{ i }}" required>
@@ -37,54 +37,54 @@
 
             <!-- Section 2: Registration (3 points) -->
             <section class="section">
-                <h2>2. Registration (3 points)</h2>
+                <h2>2. Registration</h2>
                 <div class="form-group">
                     <label>Please type the 3 words given below and remember them, as I will ask you later.</label><br>
                     <label>Apple, Table, Penny.</label><br>
-                    <input type="text" name="q11" required>
+                    <input type="text" name="q9" required>
                 </div>
             </section>
 
             <!-- Section 3: Attention and Calculation (5 points) -->
             <section class="section">
-                <h2>3. Attention and Calculation (5 points)</h2>
+                <h2>3. Attention and Calculation</h2>
                 <div class="form-group">
                     <label>Count backward from 100 five times (start from 100):</label><br>
-                    <input type="text" name="q12" required>
+                    <input type="text" name="q10" required>
                 </div>
             </section>
 
             <!-- Section 4: Recall (3 points) -->
             <section class="section">
-                <h2>4. Recall (3 points)</h2>
+                <h2>4. Recall</h2>
                 <div class="form-group">
                     <label>Recall the 3 objects:</label><br>
-                    <input type="text" name="q13" required>
+                    <input type="text" name="q11" required>
                 </div>
             </section>
 
             <!-- Section 5: Language (9 points) -->
             <section class="section">
-                <h2>5. Language (9 points)</h2>
+                <h2>5. Language</h2>
 
                 <div class="form-group">
                     <label>List two writing tools that are commonly used in a classroom (separate with commas):</label><br>
-                    <input type="text" name="q14" required>
+                    <input type="text" name="q12" required>
                 </div>
 
                 <div class="form-group">
                     <label>Write a meaningful sentence :</label><br>
-                    <input type="text" name="q15" required>
+                    <input type="text" name="q13" required>
                 </div>
 
                 <div class="form-group">
                     <label>List three steps you follow when making Tea (separate steps with commas):</label><br>
-                    <input type="text" name="q16" required>
+                    <input type="text" name="q14" required>
                 </div>
 
                 <div class="form-group">
                     <label>Describe the shape of a pentagon using 3 words (separate with commas):</label><br>
-                    <input type="text" name="q17" required>
+                    <input type="text" name="q15" required>
                 </div>
             </section>
 

@@ -236,34 +236,40 @@ input[type="text"]:nth-of-type(1) {
 .signup-body {
     margin: 0; 
     padding: 0; 
-    height: 100vh; 
+    height: auto; 
+    min-height: 100vh;
     display: flex; 
     justify-content: center; 
     align-items: center; 
     box-sizing: border-box; 
     background: linear-gradient(to right, #B8DDEE, #C4D0C2); 
+    overflow-y: auto;
 }
 
 .signup-container {
     display: flex; 
     justify-content: center; 
-    align-items: center; 
+    align-items: flex-start; 
     background: linear-gradient(to right, #B8DDEE, #C4D0C2); 
     width: 100vw; 
-    height: 100vh; 
-    padding: 0; 
+    height: auto;
+    min-height: 100vh; 
+    padding: 20px 0; 
     margin: 0; 
     box-sizing: border-box; 
+    overflow-y: auto;
 }
 
 .signup-box {
     background: white;
     padding: 40px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    width: 350px;
+    width: 450px;
+    max-width: 90%;
     text-align: center;
-    margin-top : 270px;
-    margin-bottom : 20px;
+    margin-top : 40px;
+    margin-bottom : 40px;
+    border-radius: 12px;
 }
 
 .signup-box h2 {
@@ -272,11 +278,12 @@ input[type="text"]:nth-of-type(1) {
 }
 
 .signup-box input {
-    width: auto;
+    width: 100%;
     padding: 12px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 8px;
+    box-sizing: border-box;
 }
 
 .signup-box button {
@@ -310,10 +317,17 @@ input[type="text"]:nth-of-type(1) {
     text-decoration: underline;
 }
 
+.signup-box label {
+    text-align: left;
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
 .signup-box form {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 12px;
 }
 
 /*Login Page Styling*/

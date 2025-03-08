@@ -11,7 +11,7 @@
         <div class="signup-box">
             <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" width="120" style="margin-right: 20px;">
             <h2>Create a New Account</h2>
-            <form action="#" method="POST">
+            <form action="#" method="POST" autocomplete="off">
                 
                 <label for="first_name">First Name:</label>
                 <input type="text" id="first_name" name="first_name" pattern="[a-zA-Z]*" title="Please enter alphabets only!" required>
@@ -28,6 +28,15 @@
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
+
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" required>
+
+                <label for="state">State/Province:</label>
+                <input type="text" id="state" name="state" required>
+
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
 
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>

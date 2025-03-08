@@ -102,34 +102,26 @@ def calc_mmse():
     try:
         answers = request.form.to_dict()
         mmse_score = mt.is_date(answers['q1'])
-        print('q1',mmse_score)
         mmse_score += mt.is_month(answers['q2'])
-        print('q2',mmse_score)
         mmse_score += mt.is_year(answers['q3'])
-        print('q3',mmse_score)
         mmse_score += mt.is_weekday(answers['q4'])
-        print('q4',mmse_score)
         mmse_score += mt.is_noon(answers['q5'])
-        print('q5',mmse_score)
-        """mmse_score += mt.is_state(answers['q6'])
-        mmse_score += mt.is_country(answers['q7'])
-        mmse_score += mt.is_city(answers['q8'])
-        mmse_score += mt.is_building('q9')
-        mmse_score += mt.is_room('q10')"""
+        connection = set_connection()
+        if connection:
+            user_details = return_user(connection, session['user_id'])
+            connection.close()
+        else:
+            user_details =['none', 'none', 'none']
+        mmse_score += 2 if (answers['q6'].lower())==user_details[-3].lower() else 0
+        mmse_score += 1 if (answers['q7'].lower())==user_details[-1].lower() else 0     
+        mmse_score += 2 if (answers['q8'].lower())==user_details[-2].lower() else 0
+        mmse_score += mt.is_registering(answers['q9'])
+        mmse_score += mt.is_attentive(answers['q10'])
         mmse_score += mt.is_registering(answers['q11'])
-        print('q11',mmse_score)
-        mmse_score += mt.is_attentive(answers['q12'])
-        print('q12',mmse_score)
-        mmse_score += mt.is_registering(answers['q13'])
-        print('q13',mmse_score)
-        mmse_score += mt.is_tools(answers['q14'])
-        print('q14',mmse_score)
-        mmse_score += mt.is_sentence(answers['q15'])
-        print('q15',mmse_score)
-        mmse_score += mt.is_tea_making(answers['q16'])
-        print('q16',mmse_score)
-        mmse_score += mt.is_pentagon(answers['q17'])
-        print('q17',mmse_score)
+        mmse_score += mt.is_tools(answers['q12'])
+        mmse_score += mt.is_sentence(answers['q13'])
+        mmse_score += mt.is_tea_making(answers['q14'])
+        mmse_score += mt.is_pentagon(answers['q15'])
         return redirect(url_for('show_assess', mmse_score=mmse_score))
     except Exception as e:
         print(f'Error : {e}')
@@ -165,7 +157,7 @@ def show_profile():
     connection = set_connection()
     if connection:
         user_details = return_user(connection, session['user_id'])
-        first_name, last_name, email, age, sex = user_details
+        first_name, last_name, email, age, sex, country, city, state = user_details
         risk_details = get_result(connection, session['user_id'])
         score = risk_details[-1][1] if risk_details else False
         connection.close()

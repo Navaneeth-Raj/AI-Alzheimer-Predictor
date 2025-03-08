@@ -13,7 +13,7 @@
         <div class="login-box">
             <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" width="120" style="margin-right: 20px;">
             <h2>Welcome Back</h2>
-            <form action="/login" method="POST">
+            <form action="/login" method="POST" autocomplete="off">
                 <input type="text" id="username" name="username" placeholder="Enter Username" required>
 
                 <input type="password" id="password" name="password" placeholder="Enter Password" required>

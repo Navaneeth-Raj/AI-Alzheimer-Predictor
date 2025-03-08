@@ -39,6 +39,9 @@ def signup_user(connection, form_dict):
     password = form_dict.get("password")
     first_name = form_dict.get("first_name")
     last_name = form_dict.get("last_name")
+    country = form_dict.get("country")
+    state = form_dict.get("state")
+    city = form_dict.get("city")
     age = form_dict.get("age")
     sex = form_dict.get("sex")
     email = form_dict.get("email")
@@ -48,8 +51,8 @@ def signup_user(connection, form_dict):
         cursor.execute("INSERT INTO login (user_name, password) VALUES (%s, %s) RETURNING user_id;", (username, hash_password))
         login_id = cursor.fetchone()[0]
         cursor.execute(
-                "INSERT INTO user_details (login_id, first_name, last_name, email, age, sex) VALUES (%s, %s, %s, %s, %s, %s);",
-                (login_id, first_name, last_name, email, age, sex)
+                "INSERT INTO user_details (login_id, first_name, last_name, email, age, sex, country, city ,state) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);",
+                (login_id, first_name, last_name, email, age, sex, country, city, state)
         )
         connection.commit()
         return True
@@ -63,7 +66,7 @@ def signup_user(connection, form_dict):
 def return_user(connection, user_id):
     try:
         cursor = connection.cursor()
-        cursor.execute("SELECT first_name, last_name, email, age, sex FROM user_details WHERE login_id=%s", (user_id, ))
+        cursor.execute("SELECT first_name, last_name, email, age, sex, country, city, state FROM user_details WHERE login_id=%s", (user_id, ))
         records = cursor.fetchone()
         return records
     except Exception as e:
