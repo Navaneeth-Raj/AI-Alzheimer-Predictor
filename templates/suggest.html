@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Profile</title>
+    <title>Insights For You</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles2.css') }}">
 </head>
 <body>
     <header>
@@ -14,43 +13,39 @@
                 <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" width="120" style="margin-right: 20px;"> 
                 <a href="/">HOME PAGE</a>
                 <a href="/assess">RISK ASSESSMENT</a>
-                <a href="/suggest">INSIGHTS FOR YOU</a>
+                <a href="#">INSIGHTS FOR YOU</a>
                 <a href="/track">TRACK RISK</a>
                 <a href="/about">ABOUT</a>
             </nav>
         </div>
-        <div style="display: flex; align-items: center;">
-            <a href="/logout"><button class="btn">Logout</button></a>
+        <div style="display: flex; align-items: center;"> 
+            {% if 'user_id' in session %}
+                <p>Hi, {{ session['username'] }}!</p>
+                <a href="/profile"><button class="pf-btn">{{ session['username'][:2].upper() }}</button></a>
+            {% else %}
+                <a href="/login"><button class="btn">Login</button></a>
+                <a href="/signup"><button class="btn">Signup</button></a>
+            {% endif %}
         </div>
     </header>
-    <div class="a-container">
-        <div class="profile-card">
-            <div>
-                <div class="avatar">{{ session['username'][:2].upper() }}</div>
-                <h2>{{ first_name }} {{ last_name }}</h2>
-                <p>Email: {{ email }}</p>
-                <p>Age: {{ age }}</p>
-                <p>Sex: {{ sex }}</p>
+
+    <div class="main-content">
+        <h2>Personalized Health Insights</h2>
+
+        {% if suggestions %}
+            <ul class="suggestion-list">
+                {% for suggestion in suggestions %}
+                    <li>{{ suggestion }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-history-message">No Current Data</p>
+            <div style="text-align: center;">
+                <a href="/assess"><button class="btn">Test Now</button></a>
             </div>
-        </div>        
-        <div class="risk-card">
-            <h2>Risk Assessment</h2>
-            <p>Recent Risk Score:</p>
-            <div class="risk-score-container">
-                {% if score %}
-                    <div class="risk-score 
-                        {% if score < 40 %}risk-low
-                        {% elif score < 60 %}risk-medium
-                        {% else %}risk-high
-                        {% endif %}">
-                        {{ score }}
-                    </div>
-                {% else %}
-                    <div class="risk-score no-score">No Previous History</div>
-                {% endif %}
-            </div>
-        </div>
+        {% endif %}
     </div>
+
     <footer>
         <div class="footer-container">
             <div class="footer-section">
@@ -67,6 +62,6 @@
         <div class="footer-bottom">
             <p>&copy; 2025 AI Alzheimer's Predictor. All Rights Reserved.</p>
         </div>
-    </footer>
+    </footer> 
 </body>
 </html>

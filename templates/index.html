@@ -15,12 +15,14 @@
                 <a href="#">HOME PAGE</a>
                 {% if 'user_id' in session %}
                     <a href="/assess">RISK ASSESSMENT</a>
-                    <a href="#">INSIGHTS FOR YOU</a>
+                    <a href="/suggest">INSIGHTS FOR YOU</a>
                     <a href="/track">TRACK RISK</a>
+                    <a href="/about">ABOUT</a>
                 {% else %}
                     <a href="/login">RISK ASSESSMENT</a>
                     <a href="/login">INSIGHTS FOR YOU</a>
                     <a href="/login">TRACK RISK</a>
+                    <a href="/about">ABOUT</a>
                 {% endif %}
             </nav>
         </div>
@@ -53,9 +55,9 @@
             <div class="feature-container">
                 <div class="feature-item">
                     {% if 'user_id' in session %}
-                        <a href="#"><img src="{{ url_for('static', filename='assets/insight.png') }}"></a>
+                        <a href="/suggest"><img src="{{ url_for('static', filename='assets/insight.png') }}"></a>
                     {% else %}
-                        <a href="#"><img src="{{ url_for('static', filename='assets/insight.png') }}"></a>
+                        <a href="/login"><img src="{{ url_for('static', filename='assets/insight.png') }}"></a>
                     {% endif %}
                         <h3>Personal Insights</h3>
                     <p>Receive in-depth, personalized health insights based on your unique profile. Our advanced analysis helps you understand potential risks, track changes over time, and make informed decisions to improve your overall well-being.</p>
@@ -90,8 +92,8 @@
     
             <div class="footer-section">
                 <h3>Contact Us</h3>
-                <p>Email: support@alzheimerspredictor.com</p>
-                <p>Phone: +1 234 567 890</p>
+                <p>Email: adminteam@gmail.com</p>
+                <p>GitHub: github.com/Navaneeth-Raj/AI_Powered_Alzheimers_Prediction</p>
             </div>
         </div>
         

@@ -74,22 +74,29 @@ def return_user(connection, user_id):
     finally:
         cursor.close()
 
-def insert_results(connection, user_id, mmse, functional, memory, behavior, adl, probability):
+def insert_results(connection, user_id, form_data):
     try:
         cursor = connection.cursor()
         query = """
-            INSERT INTO risk_history (user_id, mmse, functional, memory, behavior, adl, risk_score)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """
-        cursor.execute(query, (user_id, mmse, functional, memory, behavior, adl, probability * 100))
-        connection.commit()
+            INSERT INTO risk_history 
+            (user_id, mmse, functional, memory, behavior, adl, physical_activity, smoking, 
+            alcohol, head_injury, hypertension, risk_score)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        values = (
+            user_id, form_data["mmse"], form_data["functional"], form_data["memory"],
+            form_data["behavior"], form_data["adl"], form_data["physical_activity"], form_data["smoking"],
+            form_data["alcohol"], form_data["head_injury"], form_data["hypertension"], form_data["risk_score"] * 100
+        ) 
+        cursor.execute(query, values)
+        connection.commit() 
     except Exception as e:
         connection.rollback()
-        print(f'Error : {e}')
-    finally :
+        print(f'Error: {e}')
+    finally:
         cursor.close()
 
-def get_result(connection, user_id):
+def to_track(connection, user_id):
     try:
         cursor = connection.cursor()
         cursor.execute("SELECT test_date, risk_score FROM risk_history WHERE user_id=%s ORDER BY test_date ASC", (user_id,))
@@ -97,5 +104,34 @@ def get_result(connection, user_id):
         return records
     except Exception as e:
         print(f'Error : {e}')
+    finally:
+        cursor.close()
+
+def to_suggest(connection, user_id):
+    try:
+        cursor = connection.cursor()
+        query = """
+            SELECT physical_activity, smoking, alcohol, head_injury, hypertension 
+            FROM risk_history 
+            WHERE user_id = %s 
+            ORDER BY test_date DESC  
+            LIMIT 1
+        """
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+        if result:
+            factors = {
+                "physical_activity": result[0],
+                "smoking": result[1],
+                "alcohol": result[2],
+                "head_injury": result[3],
+                "hypertension": result[4],
+            }
+            return factors
+        else:
+            return None  
+    except Exception as e:
+        print(f"Error fetching suggestions: {e}")
+        return None
     finally:
         cursor.close()

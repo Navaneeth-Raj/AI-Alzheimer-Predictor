@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Alzheimer's - AI-Powered Alzheimer's Risk Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles3.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Raleway:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body style="padding: 40px; background: #f9f9f9;"> 
+    <header>
+        <div>
+            <nav style="display: flex; align-items: center;"> 
+                <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" width="120" style="margin-right: 20px;"> 
+                <a href="/">HOME PAGE</a>
+                {% if 'user_id' in session %}
+                    <a href="/assess">RISK ASSESSMENT</a>
+                    <a href="/suggest">INSIGHTS FOR YOU</a>
+                    <a href="/track">TRACK RISK</a>
+                {% else %}
+                    <a href="/login">RISK ASSESSMENT</a>
+                    <a href="/login">INSIGHTS FOR YOU</a>
+                    <a href="/login">TRACK RISK</a>
+                {% endif %}
+            </nav>
+        </div>
+        <div style="display: flex; align-items: center;"> 
+            {% if 'user_id' in session %}
+                <p>Hi, {{ session['username'] }}!</p><a href="/profile"><button class="pf-btn">{{ session['username'][:2].upper() }}</button></a>
+            {% else %}
+                <a href="/login"><button class="btn">Login</button></a>
+                <a href="/signup"><button class="btn">Signup</button></a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="about-container">
+            <div class="about-section">
+                <h2>Understanding Alzheimer's Disease</h2>
+                <p>Alzheimer's disease is a progressive neurological disorder that causes brain cells to degenerate and die. It is the most common cause of dementia — a continuous decline in thinking, behavioral and social skills that affects a person's ability to function independently.</p>
+                
+                <p>The early signs of the disease include forgetting recent events or conversations. As the disease progresses, a person with Alzheimer's disease will develop severe memory impairment and lose the ability to carry out everyday tasks.</p>
+                
+                <div class="info-box">
+                    <p><strong>Important:</strong> While there is currently no cure for Alzheimer's disease, medications may temporarily improve or slow the progression of symptoms. Early detection and lifestyle interventions can help manage the condition more effectively.</p>
+                </div>
+            </div>
+            
+            <div class="about-section">
+                <h2>Signs and Symptoms</h2>
+                <p>Everyone experiences occasional memory lapses, but the memory loss associated with Alzheimer's disease persists and worsens. Early signs and symptoms include:</p>
+                
+                <div class="two-column">
+                    <div class="column">
+                        <ul class="symptom-list">
+                            <li>Memory loss that disrupts daily life</li>
+                            <li>Challenges in planning or solving problems</li>
+                            <li>Difficulty completing familiar tasks</li>
+                            <li>Confusion with time or place</li>
+                            <li>Trouble understanding visual images and spatial relationships</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <ul class="symptom-list">
+                            <li>New problems with words in speaking or writing</li>
+                            <li>Misplacing things and losing the ability to retrace steps</li>
+                            <li>Decreased or poor judgment</li>
+                            <li>Withdrawal from work or social activities</li>
+                            <li>Changes in mood and personality</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-section">
+                <h2>Risk Factors</h2>
+                <p>Scientists believe that for most people, Alzheimer's disease is caused by a combination of genetic, lifestyle and environmental factors that affect the brain over time. The importance of these factors in increasing or decreasing the risk varies between individuals.</p>
+                
+                <ul class="risk-list">
+                    <li><strong>Age:</strong> Increasing age is the greatest known risk factor for Alzheimer's disease.</li>
+                    <li><strong>Family history and genetics:</strong> Your risk increases if a first-degree relative has the disease.</li>
+                    <li><strong>Down syndrome:</strong> Many people with Down syndrome develop Alzheimer's disease.</li>
+                    <li><strong>Head injuries:</strong> Some studies link serious head injuries with an increased risk of Alzheimer's.</li>
+                    <li><strong>Poor sleep patterns:</strong> Studies have shown a connection between poor sleep and higher levels of beta-amyloid, a protein found in the brains of people with Alzheimer's.</li>
+                    <li><strong>Lifestyle and heart health:</strong> The same factors that put you at risk of heart disease can also increase the likelihood of developing Alzheimer's.</li>
+                </ul>
+            </div>
+            
+            <div class="about-section">
+                <h2>Prevention Strategies</h2>
+                <p>While you can't change some risk factors such as age and genetics, research suggests that lifestyle choices can help support brain health as you age:</p>
+                
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Physical Exercise</h3>
+                        <p>Regular physical activity is one of the best known ways to reduce your risk. Aim for at least 150 minutes of moderate aerobic activity a week.</p>
+                        
+                        <h3>Cognitive Stimulation</h3>
+                        <p>Keeping your brain active with mentally stimulating activities like puzzles, reading, learning new skills, or playing instruments may support brain health.</p>
+                    </div>
+                    <div class="column">
+                        <h3>Heart-Healthy Diet</h3>
+                        <p>Research suggests that a diet low in saturated fat and rich in fruits, vegetables, and omega-3 fatty acids may help protect brain cells.</p>
+                        
+                        <h3>Social Engagement</h3>
+                        <p>Staying socially active may support brain health and potentially delay the onset of dementia.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <h2>Take Control of Your Brain Health Today</h2>
+                <p>Understanding your personal risk factors is the first step toward proactive brain health management.</p>
+                {% if 'user_id' in session %}
+                    <a href="/assess" style="text-decoration: none;"><button class="cta-btn">Take Our Assessment</button></a>
+                {% else %}
+                    <a href="/login" style="text-decoration: none;"><button class="cta-btn">Sign Up & Take Assessment</button></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>AI-Powered Alzheimer's Risk Predictor helps individuals assess their risk and take proactive steps towards brain health.</p>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: adminteam@gmail.com</p>
+                <p>GitHub: github.com/Navaneeth-Raj/AI_Powered_Alzheimers_Prediction</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 AI Alzheimer's Predictor. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

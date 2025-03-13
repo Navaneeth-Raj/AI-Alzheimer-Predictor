@@ -68,29 +68,47 @@ def show_assess():
 @app.route('/submit-test', methods=["POST"])
 def submit_test(): 
     try:
-        mmse = float(request.form['mmse'])
-        functional = float(request.form['functional'])
-        memory = int(request.form['memory'])
-        behavior = int(request.form['behavior'])
-        adl = float(request.form['adl'])
+        form_data = {
+            "mmse": float(request.form['mmse']),
+            "memory": int(request.form['memory']),
+            "behavior": int(request.form['behavior']),
+            "physical_activity": int(request.form['physical_activity']),
+            "smoking": int(request.form['smoking']),
+            "alcohol": int(request.form['alcohol']),
+            "head_injury": int(request.form['head_injury']),
+            "hypertension": int(request.form['hypertension']),
+        }
 
-        input_data = pd.DataFrame([[mmse, functional, memory, behavior, adl]],columns=['MMSE', 'FunctionalAssessment', 'MemoryComplaints', 'BehavioralProblems', 'ADL'])
+        form_data["functional_scores"] = [int(request.form.get(f'functional{i}', 0)) for i in range(1, 6)]
+        form_data["functional"] = sum(form_data["functional_scores"])
+
+        form_data["adl_scores"] = [int(request.form.get(f'adl{i}', 0)) for i in range(1, 6)]
+        form_data["adl"] = sum(form_data["adl_scores"])
+
+        print(form_data)
+
+        input_data = pd.DataFrame([[form_data["mmse"], form_data["functional"], form_data["memory"], 
+                                    form_data["behavior"], form_data["adl"]]],
+                                  columns=['MMSE', 'FunctionalAssessment', 'MemoryComplaints', 'BehavioralProblems', 'ADL'])
 
         input_scaled = scaler.transform(input_data)
 
         prediction = model.predict(input_scaled)[0]
         probability = model.predict_proba(input_scaled)[0][1]
+        form_data["risk_score"] = probability
 
         connection = set_connection()
-        if connection:
-            insert_results(connection, session['user_id'], mmse, functional, memory, behavior, adl, probability)
+        if connection and 'user_id' in session:
+            insert_results(connection, session['user_id'], form_data)  
+            connection.close()
+
         risk_percentage = f"{probability * 100:.2f}%"
-        connection.close()
+        print(f"Risk Percentage: {risk_percentage}")
+
         return redirect('/profile')
     except Exception as e:
-        import traceback
-        print("Error during prediction:\n", traceback.format_exc())
-        return f"Internal Server Error during prediction: {e}"
+        print(f"Error : {e}")
+
 
 #mmse test
 @app.route('/mmse')
@@ -131,7 +149,7 @@ def calc_mmse():
 def show_track():
     connection = set_connection()
     if connection :
-        results = get_result(connection, session['user_id'])
+        results = to_track(connection, session['user_id'])
         if results:
             data_flag = True
             labels = [row[0].strftime('%Y-%m-%d') if row[0] else '' for row in results]  
@@ -158,7 +176,7 @@ def show_profile():
     if connection:
         user_details = return_user(connection, session['user_id'])
         first_name, last_name, email, age, sex, country, city, state = user_details
-        risk_details = get_result(connection, session['user_id'])
+        risk_details = to_track(connection, session['user_id'])
         score = risk_details[-1][1] if risk_details else False
         connection.close()
         return render_template('profile.html', first_name=first_name, last_name=last_name, email=email, age=age, sex=sex, score=score)
@@ -169,6 +187,41 @@ def show_profile():
 def logout_user():
     session.clear()
     return redirect('/')
+
+#suggestion routing
+@app.route('/suggest')
+def suggest():
+    try:
+        connection = set_connection()
+        if not connection:
+            return render_template('suggest.html', suggestions=[], error="Database connection failed")
+        user_id = session['user_id']
+        factors = to_suggest(connection, user_id)
+        connection.close()
+        if not factors:
+            return render_template('suggest.html', suggestions=[], error="No data available to generate suggestions.")
+        suggestions = []
+        if factors.get("physical_activity") == 0:
+            suggestions.append("Increase physical activity to improve cognitive health.")
+        if factors.get("smoking") == 1:
+            suggestions.append("Consider quitting smoking to reduce Alzheimer's risk.")
+        if factors.get("alcohol") == 1:
+            suggestions.append("Limit alcohol consumption to protect brain function.")
+        if factors.get("head_injury") == 1:
+            suggestions.append("Take precautions to prevent further head injuries.")
+        if factors.get("hypertension") == 1:
+            suggestions.append("Manage blood pressure to reduce cognitive decline.")
+
+        return render_template('suggest.html', suggestions=suggestions)
+
+    except Exception as e:
+        print(f"Error generating suggestions: {e}")
+        return render_template('suggest.html', suggestions=[], error="Internal Server Error")
+
+#about page
+@app.route('/about')
+def show_about():
+    return render_template("about.html")
 
 #timeout protocol
 @app.before_request

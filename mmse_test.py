@@ -78,7 +78,7 @@ def is_sentence(sentence):
     return round(score, 2)
 
 def is_pentagon(answer):
-    descriptors = ["five", "sides", "angles", "edges", "corners", "vertices", "closed", "polygon", "shape"]
+    descriptors = ["five", "sides", "angles", "edges", "corners", "vertices", "closed", "polygon", "shape", "72"]
     words = {word.strip().lower() for word in answer.split(",")}  
     correct_words = list(word for word in words if word in descriptors) 
     return min(len(correct_words), 3) 
@@ -86,7 +86,7 @@ def is_pentagon(answer):
 def is_tea_making(answer):
     valid_steps = {
         "boil water", "heat water", "add tea leaves", "add milk", "add sugar",
-        "add tea bag", "stir sugar", "strain tea", "serve tea"
+        "add tea bag", "stir sugar", "strain tea", "serve tea", "boil milk"
     }
     steps = {step.strip().lower() for step in answer.split(",")}
     correct_steps = [step for step in steps if step in valid_steps]

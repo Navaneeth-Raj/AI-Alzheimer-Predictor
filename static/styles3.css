@@ -25,6 +25,23 @@ body, html {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
 }
 
+/*Input Field Styling*/
+input[type="number"] {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 97%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 97%;
+}
+
 /* Header Styling */
 h2, h3, h4 {
     color: #2c3e50; /* Darker text for readability */
@@ -58,9 +75,11 @@ select:hover, select:focus {
 /* Submit Button Styling */
 .cta-btn {
     display: block;
-    width: 100%;
+    width: 80%;
     padding: 15px;
     margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
     font-size: 18px;
     font-weight: bold;
     color: white;
@@ -69,6 +88,7 @@ select:hover, select:focus {
     border-radius: 12px;
     cursor: pointer;
     transition: background 0.3s ease;
+    text-decoration: none;
 }
 
 /* Hover Effect for Button */
@@ -98,4 +118,70 @@ select:hover, select:focus {
 /* Force scroll to the top */
 html {
     scroll-padding-top: 100px; /* Prevent content from being hidden */
+}
+
+/* About Alzheimer's Page Styles */
+.about-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.about-section {
+    margin-bottom: 40px;
+}
+
+.about-section h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.about-section p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+.two-column {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin: 30px 0;
+}
+
+.column {
+    flex: 1;
+}
+
+.info-box {
+    background: #f8f9fa;
+    border-left: 4px solid #4a90e2;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+}
+
+.symptom-list, .risk-list {
+    padding-left: 20px;
+}
+
+.symptom-list li, .risk-list li {
+    margin-bottom: 10px;
+}
+
+.cta-section {
+    text-align: center;
+    margin: 50px 0 30px;
+    padding: 30px;
+    background: #f0f7ff;
+    border-radius: 15px;
+}
+
+@media (max-width: 768px) {
+    .two-column {
+        flex-direction: column;
+    }
 }
