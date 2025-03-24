@@ -1,16 +1,11 @@
 import psycopg2 as db
 from werkzeug.security import generate_password_hash, check_password_hash
-import os #for Render
+import os
 
 def set_connection():
+    DATABASE_URL = os.getenv("postgresql://neondb_owner:npg_7MhcA8fHWsUi@ep-dawn-king-a5eul878-pooler.us-east-2.aws.neon.tech/Alzheimers?sslmode=require")
     try :
-        connection = db.connect(
-            dbname = "Alzheimer's",
-            user = "postgres",
-            password = "accessdata",
-            host = "localhost", 
-            port = "5432"
-        )
+        connection = db.connect(DATABASE_URL)
         return connection
     except db.Error as err:
         print(f"Error : {err}")

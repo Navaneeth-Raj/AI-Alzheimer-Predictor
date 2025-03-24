@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, url_for
 from datetime import timedelta, datetime
+import os
 from dbconnect import *
 import mmse_test as mt
 import pickle
@@ -202,15 +203,15 @@ def suggest():
             return render_template('suggest.html', suggestions=[], error="No data available to generate suggestions.")
         suggestions = []
         if factors.get("physical_activity") == 0:
-            suggestions.append("Increase physical activity to improve cognitive health.")
+            suggestions.append("Physical activity has many health benefits, such as helping to prevent being overweight and having obesity, heart disease, stroke, and high blood pressure. Aim to get at least 150 minutes of moderate-intensity physical activity each week. .")
         if factors.get("smoking") == 1:
-            suggestions.append("Consider quitting smoking to reduce Alzheimer's risk.")
+            suggestions.append("There’s more to it than just tossing your cigarettes out. Smoking is an addiction. The brain is hooked on nicotine. Without it, you’ll go through withdrawal. Line up support in advance. Ask your doctor about all the methods that will help, such as quit-smoking classes and apps, counseling, medication, and hypnosis..")
         if factors.get("alcohol") == 1:
-            suggestions.append("Limit alcohol consumption to protect brain function.")
+            suggestions.append("Drinking too much alcohol can lead to falls and worsen health conditions such as diabetes, high blood pressure, stroke, memory loss, and mood disorders. The National Institute on Alcohol Abuse and Alcoholism (NIAAA), part of the National Institutes of Health, recommends that men should not have more than two drinks a day and women only one.")
         if factors.get("head_injury") == 1:
-            suggestions.append("Take precautions to prevent further head injuries.")
+            suggestions.append("Take steps to prevent falls and head injury, such as fall-proofing your home and wearing shoes with nonskid soles that fully support your feet. Consider participating in fall prevention programs online or in your area. Also, wear seatbelts and helmets to help protect you from concussions and other brain injuries.")
         if factors.get("hypertension") == 1:
-            suggestions.append("Manage blood pressure to reduce cognitive decline.")
+            suggestions.append(" High blood pressure, or hypertension, has harmful effects on the heart, blood vessels, and brain, and increases the risk of stroke and vascular dementia. Treating high blood pressure with medication and healthy lifestyle changes, such as exercising and quitting smoking.")
 
         return render_template('suggest.html', suggestions=suggestions)
 
@@ -233,3 +234,6 @@ def check_session_timeout():
             session.clear()  
             return redirect('/')
     session['last_activity'] = datetime.utcnow().isoformat() 
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False)
