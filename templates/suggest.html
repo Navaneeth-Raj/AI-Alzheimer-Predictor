@@ -5,6 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insights For You</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Main container */
+        .suggestion-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Suggestion card styling */
+        .suggestion-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            text-align: left;
+            border-left: 6px solid #4CAF50; /* Green highlight */
+        }
+
+        .suggestion-card img {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .suggestion-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .suggestion-card p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* No history message */
+        .no-history-message {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-top: 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -29,15 +92,19 @@
         </div>
     </header>
 
-    <div class="main-content">
-        <h2>Personalized Health Insights</h2>
+    <div class="suggestion-container">
+        <h2 style="text-align: center;">💡 Personalized Health Insights</h2>
 
         {% if suggestions %}
-            <ul class="suggestion-list">
-                {% for suggestion in suggestions %}
-                    <li>{{ suggestion }}</li>
-                {% endfor %}
-            </ul>
+            {% for suggestion in suggestions %}
+                <div class="suggestion-card">
+                    
+                    <div>
+                        <h3>Health Recommendation</h3>
+                        <p style="white-space: pre-line;">{{ suggestion }}</p>
+                    </div>
+                </div>
+            {% endfor %}
         {% else %}
             <p class="no-history-message">No Current Data</p>
             <div style="text-align: center;">

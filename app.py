@@ -1,6 +1,7 @@
+import requests
+import os
 from flask import Flask, request, redirect, render_template, session, url_for
 from datetime import timedelta, datetime
-import os
 from dbconnect import *
 import mmse_test as mt
 import pickle
@@ -11,9 +12,9 @@ with open("alzheimer_prediction_model.pkl", "rb") as model_file:
 with open("scaler.pkl", "rb") as scaler_file:
     scaler = pickle.load(scaler_file)
 app = Flask(__name__)
-SECRET_KEY = os.getenv("SECRET_KEY", "02ffcdcca96270df7c0cedfb28ac85f96e99aaec46b3d1fd2ce421e65c925604")
-app.config['SECRET_KEY'] = SECRET_KEY
+app.secret_key = os.getenv("SECRET_KEY", "02ffcdcca96270df7c0cedfb28ac85f96e99aaec46b3d1fd2ce421e65c925604")
 app.permanent_session_lifetime = timedelta(minutes=30)
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
 #index page routing
 @app.route('/')
@@ -190,31 +191,62 @@ def logout_user():
     session.clear()
     return redirect('/')
 
-#suggestion routing
+def get_mistral_suggestions(factors):
+    """Generate AI-driven suggestions using Mistral API"""
+    prompt = f"Based on these health factors {factors}, generate personalized advice to reduce Alzheimer's risk."
+
+    url = "https://api.mistral.ai/v1/chat/completions"
+    headers = {"Authorization": f"Bearer {MISTRAL_API_KEY}", "Content-Type": "application/json"}
+    data = {
+        "model": "mistral-medium",
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 1024
+    }
+
+    try:
+        print("Sending request to Mistral AI...")
+        response = requests.post(url, headers=headers, json=data)
+
+        print("Mistral AI Response Code:", response.status_code)
+        print("Mistral AI Raw Response:", response.text)  # Debugging
+
+        if response.status_code != 200:
+            return f"API Error: {response.status_code} - {response.text}"
+
+        result = response.json()
+        print("Parsed Mistral Response:", result)  # Debugging
+
+        # Extract response correctly
+        return result.get("choices", [{}])[0].get("message", {}).get("content", "No insights available.")
+
+    except Exception as e:
+        print("Error calling Mistral API:", e)
+        return "Error processing AI response."
+
 @app.route('/suggest')
 def suggest():
     try:
+        print("MISTRAL_API_KEY:", MISTRAL_API_KEY)
         connection = set_connection()
         if not connection:
             return render_template('suggest.html', suggestions=[], error="Database connection failed")
-        user_id = session['user_id']
+
+        user_id = session.get('user_id')
+        if not user_id:
+            return redirect('/login')
+
         factors = to_suggest(connection, user_id)
         connection.close()
+
         if not factors:
             return render_template('suggest.html', suggestions=[], error="No data available to generate suggestions.")
-        suggestions = []
-        if factors.get("physical_activity") == 0:
-            suggestions.append("Physical activity has many health benefits, such as helping to prevent being overweight and having obesity, heart disease, stroke, and high blood pressure. Aim to get at least 150 minutes of moderate-intensity physical activity each week. .")
-        if factors.get("smoking") == 1:
-            suggestions.append("There’s more to it than just tossing your cigarettes out. Smoking is an addiction. The brain is hooked on nicotine. Without it, you’ll go through withdrawal. Line up support in advance. Ask your doctor about all the methods that will help, such as quit-smoking classes and apps, counseling, medication, and hypnosis..")
-        if factors.get("alcohol") == 1:
-            suggestions.append("Drinking too much alcohol can lead to falls and worsen health conditions such as diabetes, high blood pressure, stroke, memory loss, and mood disorders. The National Institute on Alcohol Abuse and Alcoholism (NIAAA), part of the National Institutes of Health, recommends that men should not have more than two drinks a day and women only one.")
-        if factors.get("head_injury") == 1:
-            suggestions.append("Take steps to prevent falls and head injury, such as fall-proofing your home and wearing shoes with nonskid soles that fully support your feet. Consider participating in fall prevention programs online or in your area. Also, wear seatbelts and helmets to help protect you from concussions and other brain injuries.")
-        if factors.get("hypertension") == 1:
-            suggestions.append(" High blood pressure, or hypertension, has harmful effects on the heart, blood vessels, and brain, and increases the risk of stroke and vascular dementia. Treating high blood pressure with medication and healthy lifestyle changes, such as exercising and quitting smoking.")
 
-        return render_template('suggest.html', suggestions=suggestions)
+        # Get AI-generated insights
+        print("Sending request to Mistral AI...")
+
+        ai_suggestions = get_mistral_suggestions(factors)
+
+        return render_template('suggest.html', suggestions=[ai_suggestions])
 
     except Exception as e:
         print(f"Error generating suggestions: {e}")
