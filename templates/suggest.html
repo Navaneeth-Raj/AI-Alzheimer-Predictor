@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights For You</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div>
+            <nav style="display: flex; align-items: center;"> 
+                <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" width="120" style="margin-right: 20px;"> 
+                <a href="/">HOME PAGE</a>
+                <a href="/assess">RISK ASSESSMENT</a>
+                <a href="#">INSIGHTS FOR YOU</a>
+                <a href="/track">TRACK RISK</a>
+                <a href="/about">ABOUT</a>
+            </nav>
+        </div>
+        <div style="display: flex; align-items: center;"> 
+            {% if 'user_id' in session %}
+                <p>Hi, {{ session['username'] }}!</p>
+                <a href="/profile"><button class="pf-btn">{{ session['username'][:2].upper() }}</button></a>
+            {% else %}
+                <a href="/login"><button class="btn">Login</button></a>
+                <a href="/signup"><button class="btn">Signup</button></a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-content">
+        <h2>Personalized Health Insights</h2>
+
+        {% if suggestions %}
+            <ul class="suggestion-list">
+                {% for suggestion in suggestions %}
+                    <li>{{ suggestion }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-history-message">No Current Data</p>
+            <div style="text-align: center;">
+                <a href="/assess"><button class="btn">Test Now</button></a>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>AI-Powered Alzheimer's Risk Predictor helps individuals assess their risk and take proactive steps towards brain health.</p>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: adminteam@gmail.com</p>
+                <p>GitHub: github.com/Navaneeth-Raj/AI_Powered_Alzheimers_Prediction</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AI Alzheimer's Predictor. All Rights Reserved.</p>
+        </div>
+    </footer> 
+</body>
+</html>
