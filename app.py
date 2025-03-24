@@ -11,7 +11,8 @@ with open("alzheimer_prediction_model.pkl", "rb") as model_file:
 with open("scaler.pkl", "rb") as scaler_file:
     scaler = pickle.load(scaler_file)
 app = Flask(__name__)
-app.secret_key = '02ffcdcca96270df7c0cedfb28ac85f96e99aaec46b3d1fd2ce421e65c925604'
+SECRET_KEY = os.getenv("SECRET_KEY", "02ffcdcca96270df7c0cedfb28ac85f96e99aaec46b3d1fd2ce421e65c925604")
+app.config['SECRET_KEY'] = SECRET_KEY
 app.permanent_session_lifetime = timedelta(minutes=30)
 
 #index page routing

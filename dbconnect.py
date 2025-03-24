@@ -3,13 +3,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 def set_connection():
-    DATABASE_URL = os.getenv("postgresql://neondb_owner:npg_7MhcA8fHWsUi@ep-dawn-king-a5eul878-pooler.us-east-2.aws.neon.tech/Alzheimers?sslmode=require")
-    try :
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    try:
         connection = db.connect(DATABASE_URL)
         return connection
     except db.Error as err:
         print(f"Error : {err}")
-        return None 
+        return None
 
 def login_user(connection, username, password):
     try :
